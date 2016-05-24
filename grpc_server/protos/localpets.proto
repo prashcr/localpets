@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "xyz.prashcr.localpets";
+option java_outer_classname = "LocalPetsProto";
+option objc_class_prefix = "LP";
+
+package localpets;
+
+import "google/api/annotations.proto";
+
+message Pet {
+  string id = 1;
+  string name = 2;
+  int32 age = 3;
+  int64 availableFrom = 4;
+  string species = 5;
+  string breed = 6;
+}
+
+message Customer {
+  string id = 1;
+  string name = 2;
+  string prefMinAge = 3;
+  string prefMaxAge = 4;
+  repeated string prefSpecies = 5;
+  repeated string prefBreeds = 6;
+}
+
+message AdoptRequest {
+  Pet pet = 1;
+  Customer customer = 2;
+}
+
+service LocalPets {
+  rpc CreateCustomer(Customer) returns (Customer) {
+    option(google.api.http) = {
+      post: "/v1/createcustomer"
+      body: "*"
+    };
+  }
+  rpc CreatePet(Pet) returns (Pet) {
+    option(google.api.http) = {
+      post: "/v1/createpet"
+      body: "*"
+    };
+  }
+  rpc FindCustomers(Pet) returns (stream Customer) {
+    option(google.api.http) = {
+      post: "/v1/findcustomers"
+      body: "*"
+    };
+  }
+  rpc FindPets(Customer) returns (stream Pet) {
+    option(google.api.http) = {
+      post: "/v1/findpets"
+      body: "*"
+    };
+  }
+  rpc AdoptPet(AdoptRequest) returns (Pet) {
+    option(google.api.http) = {
+      post: "/v1/adoptpet"
+      body: "*"
+    };
+  }
+}

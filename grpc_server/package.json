@@ -1,0 +1,20 @@
+{
+  "name": "grpc_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "genproxy": "bash proxy/gen_proxy.sh",
+    "genswagger": "bash proxy/gen_swagger.sh",
+    "proxy": "go install github.com/prashcr/proxy && $GOPATH/bin/proxy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "grpc": "^0.14.1",
+    "mongoose": "^4.4.17"
+  }
+}
