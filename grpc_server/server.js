@@ -1,4 +1,5 @@
 'use strict'
+
 const path = require('path')
 const PROTO_PATH = path.join(__dirname, 'protos/localpets.proto')
 const grpc = require('grpc')

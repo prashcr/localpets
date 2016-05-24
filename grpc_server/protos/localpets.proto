@@ -13,7 +13,7 @@ message Pet {
   bytes _id = 1;
   string name = 2;
   int32 age = 3;
-  int64 availableFrom = 4;
+  fixed64 availableFrom = 4;
   string species = 5;
   string breed = 6;
   bytes adoptedBy = 7;
@@ -22,8 +22,8 @@ message Pet {
 message Customer {
   bytes _id = 1;
   string name = 2;
-  string prefMinAge = 3;
-  string prefMaxAge = 4;
+  int32 prefMinAge = 3;
+  int32 prefMaxAge = 4;
   repeated string prefSpecies = 5;
   repeated string prefBreeds = 6;
 }
@@ -68,12 +68,12 @@ service LocalPets {
       get: "/v1/pets/{id}"
     };
   }
-  rpc ListCustomers(Empty) returns (stream Customer) {
+  rpc ListCustomers(EmptyMessage) returns (stream Customer) {
     option(google.api.http) = {
       get: "/v1/customers"
     };
   }
-  rpc ListPets(Empty) returns (stream Pet) {
+  rpc ListPets(EmptyMessage) returns (stream Pet) {
     option(google.api.http) = {
       get: "/v1/pets"
     };

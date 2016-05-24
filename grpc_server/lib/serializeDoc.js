@@ -1,3 +1,5 @@
+'use strict'
+
 // Convert MongoDB doc to Protobuf-friendly object
 module.exports = doc => {
   doc = doc.toObject({versionKey: false})

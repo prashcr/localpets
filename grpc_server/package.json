@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node tests/index.js",
     "start": "node server.js",
     "genproxy": "bash proxy/gen_proxy.sh",
     "genswagger": "bash proxy/gen_swagger.sh",
@@ -16,6 +16,9 @@
   "dependencies": {
     "grpc": "^0.14.1",
     "lodash": "^4.13.1",
-    "mongoose": "^4.4.17"
+    "lodash.isempty": "^4.2.1",
+    "lodash.omitby": "^4.4.0",
+    "mongoose": "^4.4.17",
+    "tape": "^4.5.1"
   }
 }
