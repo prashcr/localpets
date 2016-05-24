@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-// Customer must have a name and email, but other fields can be left blank to indicate lack of preference
+// Customer must have a name, but other fields can be left blank to indicate lack of preference
 const CustomerSchema = new Schema({
   name: {type: String, required: true},
   prefMinAge: Number,
@@ -9,5 +9,7 @@ const CustomerSchema = new Schema({
   prefSpecies: [String],
   prefBreeds: [String]
 })
+
+CustomerSchema.statics.saveItem = require('../lib/saveItem')
 
 module.exports = mongoose.model('Customer', CustomerSchema)

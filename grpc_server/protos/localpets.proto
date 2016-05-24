@@ -10,16 +10,17 @@ package localpets;
 import "google/api/annotations.proto";
 
 message Pet {
-  string id = 1;
+  bytes _id = 1;
   string name = 2;
   int32 age = 3;
   int64 availableFrom = 4;
   string species = 5;
   string breed = 6;
+  bytes adoptedBy = 7;
 }
 
 message Customer {
-  string id = 1;
+  bytes _id = 1;
   string name = 2;
   string prefMinAge = 3;
   string prefMaxAge = 4;
@@ -27,39 +28,79 @@ message Customer {
   repeated string prefBreeds = 6;
 }
 
-message AdoptRequest {
-  Pet pet = 1;
-  Customer customer = 2;
+message AdoptMessage {
+  message Pet {
+    bytes _id = 1;
+  }
+  message Customer {
+    bytes _id = 1;
+  }
+}
+
+message IdMessage {
+  bytes _id = 1;
+}
+
+message EmptyMessage {
+
 }
 
 service LocalPets {
   rpc CreateCustomer(Customer) returns (Customer) {
     option(google.api.http) = {
-      post: "/v1/createcustomer"
+      post: "/v1/customers"
       body: "*"
     };
   }
   rpc CreatePet(Pet) returns (Pet) {
     option(google.api.http) = {
-      post: "/v1/createpet"
+      post: "/v1/pets"
       body: "*"
     };
   }
-  rpc FindCustomers(Pet) returns (stream Customer) {
+  rpc GetCustomer(IdMessage) returns (Customer) {
     option(google.api.http) = {
-      post: "/v1/findcustomers"
-      body: "*"
+      get: "/v1/customers/{id}"
     };
   }
-  rpc FindPets(Customer) returns (stream Pet) {
+  rpc GetPet(IdMessage) returns (Pet) {
     option(google.api.http) = {
-      post: "/v1/findpets"
-      body: "*"
+      get: "/v1/pets/{id}"
     };
   }
-  rpc AdoptPet(AdoptRequest) returns (Pet) {
+  rpc ListCustomers(Empty) returns (stream Customer) {
     option(google.api.http) = {
-      post: "/v1/adoptpet"
+      get: "/v1/customers"
+    };
+  }
+  rpc ListPets(Empty) returns (stream Pet) {
+    option(google.api.http) = {
+      get: "/v1/pets"
+    };
+  }
+  rpc FindCustomers(IdMessage) returns (stream Customer) {
+    option(google.api.http) = {
+      get: "/v1/pets/{id}/matches"
+    };
+  }
+  rpc FindPets(IdMessage) returns (stream Pet) {
+    option(google.api.http) = {
+      get: "/v1/customers/{id}/matches"
+    };
+  }
+  rpc DeleteCustomer(IdMessage) returns (EmptyMessage) {
+    option(google.api.http) = {
+      delete: "/v1/customers/{id}"
+    };
+  }
+  rpc DeletePet(IdMessage) returns (EmptyMessage) {
+    option(google.api.http) = {
+      delete: "/v1/pets/{id}"
+    };
+  }
+  rpc AdoptPet(AdoptMessage) returns (Pet) {
+    option(google.api.http) = {
+      post: "/v1/adopt"
       body: "*"
     };
   }

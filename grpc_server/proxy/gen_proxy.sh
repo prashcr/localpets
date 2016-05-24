@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 PROXY_SRC="$GOPATH/src/github.com/prashcr/proxy";
-mkdir -p $GO_SRC &&
+mkdir -p $PROXY_SRC &&
 protoc -I/usr/local/include -I. \
  -I$GOPATH/src \
  -I$GOPATH/src/github.com/gengo/grpc-gateway/third_party/googleapis \
@@ -10,6 +10,7 @@ protoc -I/usr/local/include -I. \
 protoc -I/usr/local/include -I. \
  -I$GOPATH/src \
  -I$GOPATH/src/github.com/gengo/grpc-gateway/third_party/googleapis \
- --grpc-gateway_out=logtostderr=true:$PROXY_SRC_SRC \
+ --grpc-gateway_out=logtostderr=true:$PROXY_SRC \
  protos/*.proto
-cp proxy/proxy.go $PROXY_SRC_SRC
+cp proxy/proxy.go $PROXY_SRC &&
+go install github.com/prashcr/proxy

@@ -7,7 +7,7 @@ Features
 --------
 
 - Written in [grpc-node](https://www.npmjs.com/package/grpc) and uses MongoDB for persistence
-- Automatically generates a [Swagger](http://swagger.io/)-compatible JSON reverse proxy REST API in Go, for clients that don't support HTTP2 or have a gRPC implementation. View [grpc-gateway](https://github.com/gengo/grpc-gateway) and `protos/localpets.proto` for more details.
+- Automatically generates a [Swagger](http://swagger.io/)-compatible REST reverse proxy in Go, for clients that don't support HTTP2 or have a gRPC implementation. View [grpc-gateway](https://github.com/gengo/grpc-gateway) and `protos/localpets.proto` for more details about the REST endpoints.
 
 Usage
 ------------
@@ -45,13 +45,16 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 Generate proxy server and run it
-> `genproxy` is a bash script that compiles `.proto` into a stub, t
+> `genproxy` runs a bash script that compiles `.proto` into a gRPC stub, then generates a reverse proxy and an entrypoint for the reverse proxy (located in `proxy/proxy.go`).
 ```
 $ npm run genproxy
 $ npm run proxy
 ```
 
-(optional) Generate [Swagger](http://swagger.io) spec in current dir
+(optional) Generate [Swagger](http://swagger.io) spec in `protos` dir
 ```
 $ npm run genswagger
 ```
+
+#### REST API
+View `protos/localpets.proto` for endpoint details

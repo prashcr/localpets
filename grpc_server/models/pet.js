@@ -5,10 +5,12 @@ const Schema = mongoose.Schema
 const PetSchema = new Schema({
   name: String,
   age: Number,
-  availableFrom: {type: Date, default: Date.now},
+  availableFrom: {type: Date, default: Date.now()},
   species: String,
   breed: String,
-  adopted: {type: Boolean, default: false}
+  adoptedBy: String
 })
+
+PetSchema.statics.saveItem = require('../lib/saveItem')
 
 module.exports = mongoose.model('Pet', PetSchema)

@@ -8,13 +8,14 @@
     "start": "node server.js",
     "genproxy": "bash proxy/gen_proxy.sh",
     "genswagger": "bash proxy/gen_swagger.sh",
-    "proxy": "go install github.com/prashcr/proxy && $GOPATH/bin/proxy"
+    "proxy": "$GOPATH/bin/proxy"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "grpc": "^0.14.1",
+    "lodash": "^4.13.1",
     "mongoose": "^4.4.17"
   }
 }
