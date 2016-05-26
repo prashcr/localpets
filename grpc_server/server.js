@@ -51,35 +51,53 @@ function getPet (call, callback) {
   })
 }
 
+// Range + limit pagination http://stackoverflow.com/a/23640287/4131237
 function listCustomers (call) {
-  const stream = Customer.find().stream()
+  const {reqId, reqLimit} = call.request
+  const minId = mongoose.Types.ObjectId(reqId || '000000000000000000000000')
+  const query = {
+    _id: {
+      $gt: minId
+    }
+  }
+  const limit = reqLimit < 1000 && reqLimit > 0 ? reqLimit : 50
+  const stream = Customer.find(query).limit(limit).stream()
   stream
-    .on('data', (doc) => call.write(doc))
-    .on('error', (err) => call.end(err))
-    .on('close', () => call.end())
+    .on('data', doc => call.write(doc))
+    .on('error', err => call.end(err))
+    .on('end', () => call.end())
 }
 
+// Range + limit pagination http://stackoverflow.com/a/23640287/4131237
 function listPets (call) {
-  const stream = Pet.find().stream()
+  const {reqId, reqLimit} = call.request
+  const minId = mongoose.Types.ObjectId(reqId || '000000000000000000000000')
+  const query = {
+    _id: {
+      $gt: minId
+    }
+  }
+  const limit = reqLimit < 1000 && reqLimit > 0 ? reqLimit : 50
+  const stream = Pet.find(query).limit(limit).stream()
   stream
-    .on('data', (doc) => call.write(doc))
-    .on('error', (err) => call.end(err))
-    .on('close', () => call.end())
+    .on('data', doc => call.write(doc))
+    .on('error', err => call.end(err))
+    .on('end', () => call.end())
 }
 
+// TODO Find customers for whom this pet would match their preferences
 function findCustomers (call) {
-  call.write({})
-  call.end()
+  call.write({}).end()
 }
 
+// TODO Find pets that match customer's preferences
 function findPets (call) {
-  call.write({})
-  call.end()
+  call.write({}).end()
 }
 
 function deleteCustomer (call, callback) {
   const {_id} = call.request
-  Customer.remove({_id}, (err) => {
+  Customer.remove({_id}, err => {
     if (err) {
       console.error(err)
       return callback(err, null)
@@ -90,7 +108,7 @@ function deleteCustomer (call, callback) {
 
 function deletePet (call, callback) {
   const {_id} = call.request
-  Pet.remove({_id}, (err) => {
+  Pet.remove({_id}, err => {
     if (err) {
       console.error(err)
       return callback(err, null)

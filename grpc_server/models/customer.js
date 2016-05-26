@@ -18,11 +18,9 @@ const CustomerSchema = new Schema({
 CustomerSchema.statics.saveItem = function (item, callback) {
   // Disallow setting custom _id
   delete item._id
-  // Fix Protobuf.js automatically setting empty string as value for unset fields
+  // Protobuf.js automatically sets empty string or 0 as value for unset fields depending on type
+  // Revert this behavior by dropping empty fields
   item = omitBy(item, isEmpty)
-  // for (let key in item) {
-  //   if (item[key] === '' || item[key] === []) delete item[key]
-  // }
   ;(new this(item)).save(callback)
 }
 

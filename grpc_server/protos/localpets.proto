@@ -41,6 +41,11 @@ message IdMessage {
   bytes _id = 1;
 }
 
+message PaginationMessage {
+  bytes _id = 1;
+  int32 limit = 2;
+}
+
 message EmptyMessage {
 
 }
@@ -68,12 +73,12 @@ service LocalPets {
       get: "/v1/pets/{id}"
     };
   }
-  rpc ListCustomers(EmptyMessage) returns (stream Customer) {
+  rpc ListCustomers(PaginationMessage) returns (stream Customer) {
     option(google.api.http) = {
       get: "/v1/customers"
     };
   }
-  rpc ListPets(EmptyMessage) returns (stream Pet) {
+  rpc ListPets(PaginationMessage) returns (stream Pet) {
     option(google.api.http) = {
       get: "/v1/pets"
     };

@@ -5,12 +5,12 @@ const isEmpty = require('lodash.isempty')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-// Since pets may have missing information, none of the fields are required
+// Since pets may have missing information, only species is required
 const PetSchema = new Schema({
   name: String,
   age: Number,
   availableFrom: {type: Date, default: Date.now()},
-  species: String,
+  species: {type: String, required: true},
   breed: String,
   adoptedBy: String
 })
@@ -19,11 +19,9 @@ const PetSchema = new Schema({
 PetSchema.statics.saveItem = function (item, callback) {
   // Disallow setting custom _id
   delete item._id
-  // Fix Protobuf.js automatically setting empty string as value for unset fields
+  // Protobuf.js automatically sets empty string or 0 as value for unset fields depending on type
+  // Revert this behavior by dropping empty fields
   item = omitBy(item, isEmpty)
-  // for (let key in item) {
-  //   if (item[key] === '' || item[key] === []) delete item[key]
-  // }
   ;(new this(item)).save(callback)
 }
 

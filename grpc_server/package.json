@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node tests/index.js",
+    "test": "node tests/index.js | tap-diff",
     "start": "node server.js",
     "genproxy": "bash proxy/gen_proxy.sh",
     "genswagger": "bash proxy/gen_swagger.sh",
@@ -15,10 +15,12 @@
   "license": "ISC",
   "dependencies": {
     "grpc": "^0.14.1",
-    "lodash": "^4.13.1",
     "lodash.isempty": "^4.2.1",
     "lodash.omitby": "^4.4.0",
-    "mongoose": "^4.4.17",
+    "mongoose": "^4.4.17"
+  },
+  "devDependencies": {
+    "tap-diff": "^0.1.1",
     "tape": "^4.5.1"
   }
 }
