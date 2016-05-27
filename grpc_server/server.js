@@ -32,7 +32,8 @@ function createPet (call, callback) {
 }
 
 function getCustomer (call, callback) {
-  Customer.findById(call.request._id, (err, doc) => {
+  const {_id} = call.request
+  Customer.findById(_id, (err, doc) => {
     if (err) {
       console.error(err)
       return callback(err, null)
@@ -42,7 +43,8 @@ function getCustomer (call, callback) {
 }
 
 function getPet (call, callback) {
-  Pet.findById(call.request._id, (err, doc) => {
+  const {_id} = call.request
+  Pet.findById(_id, (err, doc) => {
     if (err) {
       console.error(err)
       return callback(err, null)
@@ -53,34 +55,34 @@ function getPet (call, callback) {
 
 // Range + limit pagination http://stackoverflow.com/a/23640287/4131237
 function listCustomers (call) {
-  const {reqId, reqLimit} = call.request
-  const minId = mongoose.Types.ObjectId(reqId || '000000000000000000000000')
+  let {_id, limit} = call.request
+  const minId = mongoose.Types.ObjectId(_id || '000000000000000000000000')
   const query = {
     _id: {
       $gt: minId
     }
   }
-  const limit = reqLimit < 1000 && reqLimit > 0 ? reqLimit : 50
+  limit = limit < 1000 && limit > 0 ? limit : 50
   const stream = Customer.find(query).limit(limit).stream()
   stream
-    .on('data', doc => call.write(doc))
+    .on('data', doc => call.write(serialize(doc)))
     .on('error', err => call.end(err))
     .on('end', () => call.end())
 }
 
 // Range + limit pagination http://stackoverflow.com/a/23640287/4131237
 function listPets (call) {
-  const {reqId, reqLimit} = call.request
-  const minId = mongoose.Types.ObjectId(reqId || '000000000000000000000000')
+  let {_id, limit} = call.request
+  const minId = mongoose.Types.ObjectId(_id || '000000000000000000000000')
   const query = {
     _id: {
       $gt: minId
     }
   }
-  const limit = reqLimit < 1000 && reqLimit > 0 ? reqLimit : 50
+  limit = limit < 1000 && limit > 0 ? limit : 50
   const stream = Pet.find(query).limit(limit).stream()
   stream
-    .on('data', doc => call.write(doc))
+    .on('data', doc => call.write(serialize(doc)))
     .on('error', err => call.end(err))
     .on('end', () => call.end())
 }
@@ -96,7 +98,7 @@ function findPets (call) {
 }
 
 function deleteCustomer (call, callback) {
-  const {_id} = call.request
+  const _id = mongoose.Types.ObjectId(call.request._id)
   Customer.remove({_id}, err => {
     if (err) {
       console.error(err)
@@ -107,7 +109,7 @@ function deleteCustomer (call, callback) {
 }
 
 function deletePet (call, callback) {
-  const {_id} = call.request
+  const _id = mongoose.Types.ObjectId(call.request._id)
   Pet.remove({_id}, err => {
     if (err) {
       console.error(err)
@@ -119,7 +121,10 @@ function deletePet (call, callback) {
 
 function adoptPet (call, callback) {
   const {pet, customer} = call.request
-  Pet.findByIdAndUpdate(pet._id, {$set: {adoptedBy: customer._id}}, (err, doc) => {
+  console.log(call.request)
+  const petId = mongoose.Types.ObjectId(pet._id)
+  const customerId = mongoose.Types.ObjectId(customer._id)
+  Pet.findByIdAndUpdate(petId, {$set: {adoptedBy: customerId}}, (err, doc) => {
     if (err) {
       console.error(err)
       return callback(err, null)

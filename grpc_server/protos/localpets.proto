@@ -10,7 +10,7 @@ package localpets;
 import "google/api/annotations.proto";
 
 message Pet {
-  bytes _id = 1;
+  string _id = 1;
   string name = 2;
   int32 age = 3;
   fixed64 availableFrom = 4;
@@ -20,7 +20,7 @@ message Pet {
 }
 
 message Customer {
-  bytes _id = 1;
+  string _id = 1;
   string name = 2;
   int32 prefMinAge = 3;
   int32 prefMaxAge = 4;
@@ -30,19 +30,21 @@ message Customer {
 
 message AdoptMessage {
   message Pet {
-    bytes _id = 1;
+    string _id = 1;
   }
   message Customer {
-    bytes _id = 1;
+    string _id = 1;
   }
+  Pet pet = 1;
+  Customer customer = 2;
 }
 
 message IdMessage {
-  bytes _id = 1;
+  string _id = 1;
 }
 
 message PaginationMessage {
-  bytes _id = 1;
+  string _id = 1;
   int32 limit = 2;
 }
 
