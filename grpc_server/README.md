@@ -54,9 +54,10 @@ npm start
 
 #### Run tests
 
-The test suite is written in [tape](https://github.com/substack/tape)
+The test suite is written in [tape](https://github.com/substack/tape), and uses a gRPC client to test the endpoints
 
 ```
+npm start
 npm test
 ```
 
