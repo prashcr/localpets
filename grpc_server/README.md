@@ -48,14 +48,14 @@ Usage
 #### Run gRPC server
 
 ```
-$ npm install
-$ npm start
+npm install
+npm start
 ```
 
 #### Run tests
 
 ```
-$ npm test
+npm test
 ```
 
 #### Generate and run REST proxy
@@ -66,34 +66,34 @@ Make sure you have `Go` installed and `GOPATH` set, before proceeding
 
 Install latest ProtocolBuffers
 ```
-$ mkdir tmp
-$ cd tmp
-$ git clone https://github.com/google/protobuf
-$ cd protobuf
-$ ./autogen.sh
-$ ./configure
-$ make
-$ make check
-$ sudo make install
+mkdir tmp
+cd tmp
+git clone https://github.com/google/protobuf
+cd protobuf
+./autogen.sh
+./configure
+make
+make check
+sudo make install
 ```
 
 Install required Go packages
 ```
-$ go get -u github.com/gengo/grpc-gateway/protoc-gen-grpc-gateway
-$ go get -u github.com/gengo/grpc-gateway/protoc-gen-swagger
-$ go get -u github.com/golang/protobuf/protoc-gen-go
+go get -u github.com/gengo/grpc-gateway/protoc-gen-grpc-gateway
+go get -u github.com/gengo/grpc-gateway/protoc-gen-swagger
+go get -u github.com/golang/protobuf/protoc-gen-go
 ```
 
 Generate proxy server and run it
 > `genproxy` runs a bash script that compiles `.proto` into a gRPC stub, then generates a reverse proxy and an entrypoint for the reverse proxy (located in `proxy/proxy.go`) These generated files will live under $GOPATH/src/github.com/prashcr/proxy.
 ```
-$ npm run genproxy
-$ npm run proxy
+npm run genproxy
+npm run proxy
 ```
 
 For details about the REST endpoints, view `protos/localpets.proto` for the list of endpoints and their query/path params. The proxy server listens on port `8080` by default, which can be changed in `proxy/proxy.go`.
 
 (optional) Generate [Swagger](http://swagger.io) spec in `protos` dir
 ```
-$ npm run genswagger
+npm run genswagger
 ```
