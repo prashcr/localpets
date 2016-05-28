@@ -12,21 +12,35 @@ Features
 ### Entities
 
 #### Pet
-- _id
-- name
-- age
-- availableFrom
-- species
-- breed
-- adoptedBy
+- `_id`
+- `name`
+- `age`
+- `availableFrom`
+- `species`
+- `breed`
+- `adoptedBy`
 
 #### Customer
-- _id
-- name
-- prefMinAge
-- prefMaxAge
-- prefSpecies
-- prefBreeds
+- `_id`
+- `name`
+- `prefMinAge`
+- `prefMaxAge`
+- `prefSpecies`
+- `prefBreeds`
+
+### Services
+
+- `createCustomer`
+- `createPet`
+- `getCustomer`
+- `getPet`
+- `listCustomers`
+- `listPets`
+- `findCustomers`
+- `findPets`
+- `deleteCustomer`
+- `deletePet`
+- `adoptPet`
 
 Usage
 ------------

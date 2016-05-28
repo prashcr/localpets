@@ -43,6 +43,7 @@ message IdMessage {
   string _id = 1;
 }
 
+// Range + limit pagination http://stackoverflow.com/a/23640287/4131237
 message PaginationMessage {
   string _id = 1;
   int32 limit = 2;
