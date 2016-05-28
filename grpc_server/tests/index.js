@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const test = require('tape')
 
 test('create customer', t => {
-  t.plan(1)
+  t.plan(2)
 
   const customer = {
     name: 'John Doe',
@@ -21,7 +21,8 @@ test('create customer', t => {
     if (err) {
       return t.error(err, 'no error')
     }
-    t.deepEqual(customer.prefBreeds, doc.prefBreeds, 'attribute should be equivalent')
+    t.deepEqual(customer.prefBreeds, doc.prefBreeds, 'prefBreeds should be equivalent')
+    t.equal(customer.prefMaxAge, doc.prefMaxAge, 'prefMaxAge should be equivalent')
   })
 })
 
@@ -37,7 +38,7 @@ test('create pet', t => {
     if (err) {
       return t.error(err, 'no error')
     }
-    t.deepEqual(pet.species, doc.species, 'attribute should be equivalent')
+    t.equal(pet.species, doc.species, 'species should be equivalent')
   })
 })
 
@@ -54,7 +55,7 @@ test('get customer', t => {
       if (err) {
         return t.error(err, 'no error')
       }
-      t.equal(customer.name, doc.name, 'attribute should be equivalent')
+      t.equal(customer.name, doc.name, 'name should be equivalent')
     })
   })
 })
@@ -72,7 +73,7 @@ test('get pet', t => {
       if (err) {
         return t.error(err, 'no error')
       }
-      t.equal(pet.species, doc.species, 'attribute should be equivalent')
+      t.equal(pet.species, doc.species, 'species should be equivalent')
     })
   })
 })
@@ -105,53 +106,53 @@ test('list pets', t => {
     })
 })
 
-test.skip('find matching customers for first pet', t => {
-  t.plan(2)
-
-  const petStream = client.listPets({limit: 1})
-  const pets = []
-  petStream
-    .on('data', doc => pets.push(doc))
-    .on('error', err => t.error(err, 'no error'))
-    .on('end', () => {
-      t.equal(pets.length, 1, 'only one pet should be returned')
-      const [firstPet] = pets
-      const firstPetId = mongoose.Types.ObjectId(firstPet._id)
-      const customers = []
-      const customerStream = client.findCustomers({_id: firstPetId})
-      customerStream
-        .on('data', doc => customers.push(doc))
-        .on('error', err => t.error(err, 'no error'))
-        .on('end', () => {
-          const [firstCustomer] = customers
-          t.ok(firstCustomer.name.length > 0, 'first customer found should have a name')
-        })
-    })
-})
-
-test.skip('find matching pets for first customer', t => {
-  t.plan(2)
-
-  const customerStream = client.listCustomers({limit: 1})
-  const customers = []
-  customerStream
-    .on('data', doc => customers.push(doc))
-    .on('error', err => t.error(err, 'no error'))
-    .on('end', () => {
-      t.equal(customers.length, 1, 'only one customer should be returned')
-      const [firstCustomer] = customers
-      const firstCustomerId = mongoose.Types.ObjectId(firstCustomer._id)
-      const pets = []
-      const petStream = client.findPets({_id: firstCustomerId})
-      petStream
-        .on('data', doc => pets.push(doc))
-        .on('error', err => t.error(err, 'no error'))
-        .on('end', () => {
-          const [firstPet] = pets
-          t.ok(firstPet.species.length > 0, 'first pet found should have a species')
-        })
-    })
-})
+// test('find matching customers for first pet', t => {
+//   t.plan(2)
+//
+//   const petStream = client.listPets({limit: 1})
+//   const pets = []
+//   petStream
+//     .on('data', doc => pets.push(doc))
+//     .on('error', err => t.error(err, 'no error'))
+//     .on('end', () => {
+//       t.equal(pets.length, 1, 'only one pet should be returned')
+//       const [firstPet] = pets
+//       const firstPetId = mongoose.Types.ObjectId(firstPet._id)
+//       const customers = []
+//       const customerStream = client.findCustomers({_id: firstPetId})
+//       customerStream
+//         .on('data', doc => customers.push(doc))
+//         .on('error', err => t.error(err, 'no error'))
+//         .on('end', () => {
+//           const [firstCustomer] = customers
+//           t.ok(firstCustomer.name.length > 0, 'first customer found should have a name')
+//         })
+//     })
+// })
+//
+// test('find matching pets for first customer', t => {
+//   t.plan(2)
+//
+//   const customerStream = client.listCustomers({limit: 1})
+//   const customers = []
+//   customerStream
+//     .on('data', doc => customers.push(doc))
+//     .on('error', err => t.error(err, 'no error'))
+//     .on('end', () => {
+//       t.equal(customers.length, 1, 'only one customer should be returned')
+//       const [firstCustomer] = customers
+//       const firstCustomerId = mongoose.Types.ObjectId(firstCustomer._id)
+//       const pets = []
+//       const petStream = client.findPets({_id: firstCustomerId})
+//       petStream
+//         .on('data', doc => pets.push(doc))
+//         .on('error', err => t.error(err, 'no error'))
+//         .on('end', () => {
+//           const [firstPet] = pets
+//           t.ok(firstPet.species.length > 0, 'first pet found should have a species')
+//         })
+//     })
+// })
 
 test('delete first customer', t => {
   t.plan(2)
@@ -196,16 +197,16 @@ test('new customer adopts new pet', t => {
     prefSpecies: ['turtle', 'cat'],
     prefMaxAge: 6
   }
+  const pet = {
+    name: 'Shadow',
+    species: 'Direwolf',
+    age: 15
+  }
   client.createCustomer(customer, (err, doc) => {
     if (err) {
       return t.error(err, 'no error')
     }
     const customerId = doc._id
-    const pet = {
-      name: 'Shadow',
-      species: 'Direwolf',
-      age: 15
-    }
     client.createPet(pet, (err, doc) => {
       if (err) {
         return t.error(err, 'no error')

@@ -88,17 +88,20 @@ function listPets (call) {
 }
 
 // TODO Find customers for whom this pet would match their preferences
+// Naive idea would be to find matching pets for every customer
+// then filter customers by whether or not this pet is in their matching list
 function findCustomers (call) {
   call.write({}).end()
 }
 
 // TODO Find pets that match customer's preferences
+// For each pref on customer, if there is a preference then filter by it otherwise don't
 function findPets (call) {
   call.write({}).end()
 }
 
 function deleteCustomer (call, callback) {
-  const _id = mongoose.Types.ObjectId(call.request._id)
+  const {_id} = call.request
   Customer.remove({_id}, err => {
     if (err) {
       console.error(err)
@@ -109,7 +112,7 @@ function deleteCustomer (call, callback) {
 }
 
 function deletePet (call, callback) {
-  const _id = mongoose.Types.ObjectId(call.request._id)
+  const {_id} = call.request
   Pet.remove({_id}, err => {
     if (err) {
       console.error(err)
@@ -121,10 +124,7 @@ function deletePet (call, callback) {
 
 function adoptPet (call, callback) {
   const {pet, customer} = call.request
-  console.log(call.request)
-  const petId = mongoose.Types.ObjectId(pet._id)
-  const customerId = mongoose.Types.ObjectId(customer._id)
-  Pet.findByIdAndUpdate(petId, {$set: {adoptedBy: customerId}}, (err, doc) => {
+  Pet.findByIdAndUpdate(pet._id, {$set: {adoptedBy: customer._id}}, (err, doc) => {
     if (err) {
       console.error(err)
       return callback(err, null)

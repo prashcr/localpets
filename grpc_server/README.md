@@ -9,6 +9,25 @@ Features
 - Written in [grpc-node](https://www.npmjs.com/package/grpc) and uses MongoDB for persistence
 - Automatically generates a [Swagger](http://swagger.io/)-compatible REST reverse proxy in Go, for clients that don't support HTTP2 or have a gRPC implementation. View [grpc-gateway](https://github.com/gengo/grpc-gateway) and `protos/localpets.proto` for more details about the REST endpoints.
 
+### Entities
+
+#### Pet
+- _id
+- name
+- age
+- availableFrom
+- species
+- breed
+- adoptedBy
+
+#### Customer
+- _id
+- name
+- prefMinAge
+- prefMaxAge
+- prefSpecies
+- prefBreeds
+
 Usage
 ------------
 
@@ -16,7 +35,7 @@ Usage
 
 ```
 npm install
-npm serve
+npm start
 ```
 
 #### Instructions for automatic generation of REST proxy.
@@ -57,4 +76,4 @@ $ npm run genswagger
 ```
 
 #### REST API
-View `protos/localpets.proto` for endpoint details
+View `protos/localpets.proto` for the list of endpoints and their query/path params. The proxy server listens on port `8080` by default, which can be changed in `proxy/proxy.go`.

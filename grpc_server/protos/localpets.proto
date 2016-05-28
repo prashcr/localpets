@@ -16,7 +16,7 @@ message Pet {
   fixed64 availableFrom = 4;
   string species = 5;
   string breed = 6;
-  bytes adoptedBy = 7;
+  string adoptedBy = 7;
 }
 
 message Customer {
