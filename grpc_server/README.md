@@ -89,6 +89,7 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 
 Generate proxy server and run it
 > `genproxy` runs a bash script that compiles `.proto` into a gRPC stub, then generates a reverse proxy and an entrypoint for the reverse proxy (located in `proxy/proxy.go`) These generated files will live under $GOPATH/src/github.com/prashcr/proxy.
+
 ```
 npm run genproxy
 npm run proxy
