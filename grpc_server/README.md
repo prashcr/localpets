@@ -54,6 +54,8 @@ npm start
 
 #### Run tests
 
+The test suite is written in [tape](https://github.com/substack/tape)
+
 ```
 npm test
 ```
